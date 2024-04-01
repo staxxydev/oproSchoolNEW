@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Прохождение опроса</h1>
+    <form>
+        <div><input type="text" placeholder="Как вам качество обучения?" id="user_quality"></div>
+        <div><input type="text" placeholder="Что вы хотели бы добавить/доработать?" id="user_offers"></div>
+        <div id="error"></div>
+        <button id="send">Отправить</button>
+
+    </form>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-top: 15px;
+            font-size: 26px;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+            text-align: center;
+        }
+
+        button {
+            border: 0;
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 30px;
+            width: 200px;
+            font-size: 18px;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 500ms ease;
+            color: var(--tg-theme-button-color);
+            background: var(--tg-theme-button-text-color);
+            
+        }
+        button:hover {
+            background: var(--tg-theme-secondary-bg-color);
+        }
+        #error {
+            color: red;
+            font-weight: 400;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        input {
+            margin-top: 20px;
+            width: 280px;
+            padding: 10px;
+            outline: none;
+            border: 2px solid silver;
+            border-radius: 5px;
+        }
+        input:focus {
+            border-color: #db5d5d;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+        #error {
+            color: red;
+            font-weight: 400;
+            font-size: 12px;
+            margin-top: 5px;
+            z-index: 999;
+        }
+
+
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        let tg = window.Telegram.WebApp;
+        let send = document.getElementById("send");
+        tg.expand();
+
+        send.addEventListener("click", () => {
+            document.getElementById("error").innerText = "";
+            let quality = document.getElementById("user_quality").value
+            let offer = document.getElementById("user_offers").value
+            if(quality == "") {
+                document.getElementById("error").innerText = 'Ошибка! Поле не должно быть пустым.';
+                return;
+            }
+            if(offer == "") {
+                document.getElementById("error").innerText = 'Ошибка! Поле не должно быть пустым.';
+                return;
+            }
+
+            let data = {
+                quality: quality,
+                offer: offer
+            }
+            tg.sendData(JSON.stringify(data));
+
+            tg.close();
+        })
+    </script>
+
+</body>
+</html>
